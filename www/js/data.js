@@ -8,9 +8,9 @@ $(document).ready(function(){
         timeout: 5000,
         success: function(data, status){
             $.each(data, function(i,item){
-                var station = '<h1>'+item.name+'</h1>'
-                + '<p>'+item.latitude+'<br>'
-                + item.longitude+'</p>';
+                var station = '<h1>'+item.NAME+'</h1>'
+                + '<p>'+item.LAT+'<br>'
+                + item.LNG+'</p>';
                 
                 output.append(station);
             });
