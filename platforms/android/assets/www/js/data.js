@@ -1,7 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function(){
     var output = $('#output');
 
-    //  $.ajax({
+  //  $.ajax({
     //     url: 'http://dbiketrackerv2.herokuapp.com/',
     //     dataType: 'jsonp',
     //     jsonp: 'jsoncallback',
@@ -15,7 +15,7 @@ $(document).ready(function() {
     //         });
     //     },
     //     error: function(){
-    output.text('There was an error loading the data.');
+             output.text('There was an error loading the data.');
     //     }
     // });
 });
