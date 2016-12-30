@@ -24,6 +24,11 @@
     <feature name="Geolocation">
         <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
     </feature>
+    <allow-navigation href="content:*" />
+    <feature name="jsHybugger">
+        <param name="android-package" value="org.jshybugger.cordova.JsHybuggerPlugin" />
+        <param name="onload" value="true" />
+    </feature>
     <name>HelloCordova</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -35,6 +40,7 @@
     <access origin="*" />
     <access origin="http://maps.google.com" />
     <access origin="http://dbiketrackerv2.herokuapp.com/" />
+    <access origin="http://dbiketrackerv2.herokuapp.com/view-locations-sql.php" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -43,4 +49,5 @@
     <allow-intent href="geo:*" />
     <allow-intent href="market:*" />
     <preference name="loglevel" value="DEBUG" />
+    <preference name="loadUrlTimeoutValue" value="180000" />
 </widget>

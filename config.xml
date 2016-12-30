@@ -12,6 +12,7 @@
     <access origin="*" />
 	<access origin="http://maps.google.com" />
 	<access origin ="http://dbiketrackerv2.herokuapp.com/" />
+	<access origin ="http://dbiketrackerv2.herokuapp.com/view-locations-sql.php" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />

@@ -61,6 +61,12 @@ module.exports = [
         "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
         "pluginId": "cordova-plugin-geolocation",
         "runs": true
+    },
+    {
+        "id": "org.jshybugger.cordova.jsHybuggerLoader",
+        "file": "plugins/org.jshybugger.cordova/www/jsHybuggerLoader.js",
+        "pluginId": "org.jshybugger.cordova",
+        "runs": true
     }
 ];
 module.exports.metadata = 
@@ -71,7 +77,8 @@ module.exports.metadata =
     "cordova-plugin-device-motion": "1.2.2",
     "cordova-plugin-device-orientation": "1.0.4",
     "cordova-plugin-compat": "1.1.0",
-    "cordova-plugin-geolocation": "2.4.0"
+    "cordova-plugin-geolocation": "2.4.0",
+    "org.jshybugger.cordova": "4.5.9"
 };
 // BOTTOM OF METADATA
 });

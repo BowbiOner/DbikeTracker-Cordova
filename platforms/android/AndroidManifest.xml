@@ -11,6 +11,19 @@
         </activity>
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDV3FZR5pDV1U9vJ5qGMI3mJWs4vj6Us3E" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <provider android:authorities="dbike.tracker.app.jsHybugger" android:enabled="true" android:exported="false" android:name="org.jshybugger.DebugContentProvider">
+            <meta-data android:name="debugPort" android:value="8888" />
+            <meta-data android:name="releaseBuildDebugging" android:value="true" />
+            <meta-data android:name="excludeFiles" android:value="*.min.js,*/cordova.js" />
+            <meta-data android:name="excludeHosts" android:value="*.google*.com,*.twitter.com,*.gstatic.com" />
+            <meta-data android:name="mimeTypesHtml" android:value=".html" />
+            <meta-data android:name="mimeTypesJavascript" android:value=".js" />
+            <meta-data android:name="proxyEnabled" android:value="false" />
+            <meta-data android:name="proxyPort" android:value="8080" />
+            <meta-data android:name="upstreamProxyEnabled" android:value="false" />
+            <meta-data android:name="upstreamProxyHost" android:value="192.168.178.1" />
+            <meta-data android:name="upstreamProxyPort" android:value="8080" />
+        </provider>
     </application>
     <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="24" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

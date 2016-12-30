@@ -22,6 +22,9 @@
         },
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "dbike.tracker.app"
+        },
+        "org.jshybugger.cordova": {
+            "PACKAGE_NAME": "dbike.tracker.app"
         }
     },
     "dependent_plugins": {
