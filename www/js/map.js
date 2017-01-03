@@ -21,37 +21,58 @@ var app = {
     onSuccess: function(position) {
         var url = "http://dbiketrackerv2.herokuapp.com/view-locations-sql.php";
         $.getJSON(url, function(result) {
-            console.log(result.LAT);
-            console.log(result);
 
             lats = result.map(function(a) {
                 return a.LAT;
+
             });
 
             longs = result.map(function(a) {
                 return a.LNG;
             });
 
-            for (var i = 0; i < longs.length; i++) {
-                longitude = longs[i];
-                console.log("Longitude: " + longs[20]);
-                latitude = lats[i];
-                console.log("Latitude: " + lats[20]);
-                latLong = new google.maps.LatLng(latitude, longitude);
+            names = result.map(function(a) {
+                return a.NAME;
+            });
 
-                var marker = new google.maps.Marker({
-                    position: latLong,
-                    map: map,
-                });
-            }
-            centrLatLong = new google.maps.LatLng("53.349562", "-6.278198");
+            var points = [];
+
+            $(lats).each(function(index, val) {
+                points.push([lats[index], longs[index], names[index]]);
+            })
+
+            centreLatLong = new google.maps.LatLng(points[10][0], points[10][1]);
+
             var mapOptions = {
-                center: centrLatLong,
+                center: centreLatLong,
                 zoom: 17,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+            for (var i = 0; i < points.length; i++) {
+                longitude = longs[i];
+                latitude = lats[i];
+                latLong = new google.maps.LatLng(points[i][0], points[i][1]);
+
+                var contentString = points[i][2];
+
+                var marker = new google.maps.Marker({
+                    position: latLong,
+                    map: map,
+                    contentString: contentString
+                });
+
+                var infowindow = new google.maps.InfoWindow({});
+
+                marker.addListener('click', function() {
+                    infowindow.setContent(this.contentString);
+                    infowindow.open(map, this);
+                });
+
+
+            }
 
         });
     },
