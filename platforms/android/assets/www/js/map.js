@@ -19,7 +19,9 @@ var app = {
     },
 
     onSuccess: function(position) {
+        //var liveUrl "http://dbiketrackerv2.herokuapp.com/php-scripts/live-data.php";
         var url = "http://dbiketrackerv2.herokuapp.com/view-locations-sql.php";
+
         $.getJSON(url, function(result) {
 
             lats = result.map(function(a) {
@@ -34,12 +36,24 @@ var app = {
             names = result.map(function(a) {
                 return a.NAME;
             });
+
+            avail = result.map(function(a) {
+                return a.AVAIL_BIKES;
+
+            });
+
+            availslts = result.map(function(a) {
+                return a.AVAIL_SLOTS;
+
+            });
+
             var points = [];
 
             $(lats).each(function(index, val) {
-                points.push([lats[index], longs[index], names[index]]);
+                points.push([lats[index], longs[index], names[index], avail[index], availslts[index]]);
             })
-
+            console.log("Bikes Available: " + avail);
+            console.log("Names: " + names);
             centreLatLong = new google.maps.LatLng(points[10][0], points[10][1]);
 
             var mapOptions = {
@@ -54,7 +68,7 @@ var app = {
                 longitude = longs[i];
                 latitude = lats[i];
                 latLong = new google.maps.LatLng(points[i][0], points[i][1]);
-                var contentString = points[i][2];
+                var contentString = "</p>" + points[i][2] + "<br />" + " Bikes Available:" + points[i][3] + "<br />" + " Slots Available:" + points[i][4];
 
                 var marker = new google.maps.Marker({
                     position: latLong,
