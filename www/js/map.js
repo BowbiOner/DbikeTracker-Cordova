@@ -20,6 +20,10 @@ var app = {
     onSuccess: function(position) {
         //var myLng = position.coords.longitude;
         //var myLat = position.coords.latitude;
+        var bounds = new google.maps.LatLngBounds;
+        var geocoder = new google.maps.Geocoder;
+        var service = new google.maps.DistanceMatrixService;
+
         var myLng = -6.260778899999991;
         var myLat = 53.35124159999999;
         var myLatLong = new google.maps.LatLng(myLat, myLng);
@@ -71,21 +75,7 @@ var app = {
 
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-            var myContentString = "<p>" + " This is your current location " + "<br />" + "Closest Station: Drive" + "</p>";
-            //marker for current location
-            var myMarker = new google.maps.Marker({
-                icon: './img/current_location.png',
-                position: myLatLong,
-                map: map,
-                myContentString: myContentString
-            });
-            //infowindow for current location marker
-            var myInfoWindow = new google.maps.InfoWindow({});
-            //marker for current location
-            myMarker.addListener('click', function() {
-                myInfoWindow.setContent(this.myContentString);
-                myInfoWindow.open(map, this);
-            });
+
             //loop that creates the markers & infowindows for station locations
             for (var i = 0; i < points.length; i++) {
                 //creates a new google latlng object for each pair in the points array
@@ -111,34 +101,38 @@ var app = {
 
             //creates latlng object from users current location (defined) at start of onSuccess function
             var mLocation = new google.maps.LatLng(myLat, myLng);
-
             var sLocations = [];
             for (var i = 0; i < points.length; i++) {
                 //creates latlng objects from each lat/lng pair in the points array
                 sLocation = new google.maps.LatLng(points[i][0], points[i][1]);
                 //calculates striaght line distance from current loaction to all stations
                 var distanceFromAllStations = google.maps.geometry.spherical.computeDistanceBetween(mLocation, sLocation);
-                //adds number of each station and distnace from user to an array
-                sLocations.push([points[i][5], distanceFromAllStations]);
-
+                //adds number of each station and distnace from user to an arrayv
+                $(sLocation).each(function(index, val) {
+                    //number, names, distnace, lat, long,bikes, slots
+                    sLocations.push([points[i][5], points[i][2], distanceFromAllStations, points[i][0], points[i][1], points[i][3], points[i][4]]);
+                })
             }
+
             //narorw down dataset based on hardcoded distance
             var nearMe = [];
             for (var i = 0; i < sLocations.length; i++) {
-                if (sLocations[i][1] <= 750) {
+                if (sLocations[i][2] <= 750) {
                     nearMe.push(sLocations[i]);
                 }
             }
-            console.log(nearMe);
-            //Distance Matrix API
-            var bounds = new google.maps.LatLngBounds;
-            var geocoder = new google.maps.Geocoder;
 
-            var service = new google.maps.DistanceMatrixService;
+            var stationsNearMe = [];
+            for (var i = 0; i < nearMe.length; i++) {
+                x = new google.maps.LatLng(nearMe[i][3], nearMe[i][4]);
+                stationsNearMe.push(x);
+            }
+            console.log(stationsNearMe);
+            //Distance Matrix API
             service.getDistanceMatrix({
                 origins: [mLocation],
-                destinations: sLocations,
-                travelMode: 'DRIVING',
+                destinations: stationsNearMe,
+                travelMode: 'WALKING',
                 unitSystem: google.maps.UnitSystem.METRIC,
                 avoidHighways: false,
                 avoidTolls: false
@@ -163,10 +157,25 @@ var app = {
                             });
                             outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
                                 ': ' + results[j].distance.text + ' in ' +
-                                results[j].duration.text + '<br>';
+                                results[j].duration.text + "<br /><br /><br />";
                         }
                     }
                 }
+            });
+            var myContentString = "<p>" + " This is your current location " + "<br />" + "Closest Station: Drive" + "</p>";
+            //marker for current location
+            var myMarker = new google.maps.Marker({
+                icon: './img/current_location.png',
+                position: myLatLong,
+                map: map,
+                myContentString: myContentString
+            });
+            //infowindow for current location marker
+            var myInfoWindow = new google.maps.InfoWindow({});
+            //marker for current location
+            myMarker.addListener('click', function() {
+                myInfoWindow.setContent(this.myContentString);
+                myInfoWindow.open(map, this);
             });
         });
     },
