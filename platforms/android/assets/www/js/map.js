@@ -61,11 +61,13 @@ var app = {
 
             });
 
+
             var points = [];
             //adds each variable defined above to an array, points, this will be the access point for all of our data
             $(lats).each(function(index, val) {
                 points.push([lats[index], longs[index], names[index], avail[index], availslts[index], number[index]]);
             })
+            console.log(points);
 
             var mapOptions = {
                 center: myLatLong,
