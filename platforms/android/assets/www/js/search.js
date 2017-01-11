@@ -1,4 +1,3 @@
-function test() {
     var url = "http://dbiketrackerv2.herokuapp.com/view-locations-sql.php";
 
     $.getJSON(url, function(result) {
@@ -10,11 +9,17 @@ function test() {
             return a.NUMBER;
         });
         var points = [];
-        //adds each variable defined above to an array, points, this will be the access point for all of our data
-        $(names).each(function(index, val) {
-            points.push([names[index]])
+        // //adds each variable defined above to an array, points, this will be the access point for all of our data
+        // $(names).each(function(index, val) {
+        //     points.push([names[index]])
+        // });
+
+        $.each(names, function(index, val) {
+
+            points.push('<li>' + names[index] + '</li>');
+
         });
         console.log(points);
+        $('#ul').append(points.join(''));
+
     })
-}
-test();
