@@ -29,35 +29,35 @@ var app = {
         var myLatLong = new google.maps.LatLng(myLat, myLng);
 
         //var liveUrl "http://dbiketrackerv2.herokuapp.com/php-scripts/live-data.php";
-        var url = "http://dbiketrackerv2.herokuapp.com/view-locations-sql.php";
+        var url = "https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=ec447add626cfb0869dd4747a7e50e21d39d1850";
 
         $.getJSON(url, function(result) {
             //retrieves specific fields from json array being returned by script hosted on heroku and adds the to specific variables
             lats = result.map(function(a) {
-                return a.LAT;
+                return a.position.lat;
 
             });
 
             longs = result.map(function(a) {
-                return a.LNG;
+                return a.position.lng;
             });
 
             names = result.map(function(a) {
-                return a.NAME;
+                return a.name;
             });
 
             avail = result.map(function(a) {
-                return a.AVAIL_BIKES;
+                return a.available_bikes;
 
             });
 
             availslts = result.map(function(a) {
-                return a.AVAIL_SLOTS;
+                return a.available_bike_stands;
 
             });
 
             number = result.map(function(a) {
-                return a.NUMBER;
+                return a.number;
 
             });
 
