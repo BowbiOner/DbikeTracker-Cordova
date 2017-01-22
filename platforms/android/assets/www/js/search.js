@@ -16,7 +16,7 @@
 
         $.each(names, function(index, val) {
 
-            points.push('<li>' + names[index] + '</li>');
+            points.push('<li>' + names[index] + " " + number[index] +'</li>');
 
         });
         console.log(points);
