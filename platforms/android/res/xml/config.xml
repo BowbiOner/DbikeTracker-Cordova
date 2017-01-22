@@ -29,13 +29,14 @@
         <param name="android-package" value="org.jshybugger.cordova.JsHybuggerPlugin" />
         <param name="onload" value="true" />
     </feature>
-    <name>HelloCordova</name>
+    <name>dbike Tracker</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        An application for checking current availability and prediciting future availability of dublin bikes
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="dbiketracker@gmail.com" href="http://iadt.ie">
+        dbiketracker Team
     </author>
+    <icon src="www/img/logo.png" />
     <content src="index.html" />
     <access origin="*" />
     <access origin="http://maps.google.com" />

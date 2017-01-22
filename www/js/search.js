@@ -16,10 +16,10 @@
 
         $.each(names, function(index, val) {
 
-            points.push('<li>' + names[index] + " " + number[index] +'</li>');
+            points.push('<option>' + names[index] + " " + number[index] +'</option>');
 
         });
         console.log(points);
-        $('#ul').append(points.join(''));
+        $('#anotherSelect').append(points.join(''));
 
     })

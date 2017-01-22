@@ -1,29 +1,33 @@
 <html>
-
 <head>
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" /> -->
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBO0A9Jx2ee53ZXKAVQx3OYzxw3whZs0Jg&libraries=geometry"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <!-- <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/map.js"></script>
     <script type="text/javascript" src="js/search.js"></script>
     <title>"dbike Tracker"</title>
 </head>
-
 <body>
-    <div id="map"></div>
+<div data-role="page" id="map-page" data-url="map-page">
+	<div class = "search">
+<select value = "Choose a station" id="anotherSelect" data-filter="true" data-input="#searchForSelect">
+ 
+</select>
+    
+    <div role="main" class="ui-content" id="map-canvas">
+    
+</div>
     <div id="output"></div>
-    <form action="index0.html">
-        <input type="submit" value="Search" />
-    </form>
+	</div>
+	</div>
 </body>
-
-
 </html>
 </body>
+ 
