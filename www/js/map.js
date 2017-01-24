@@ -18,8 +18,8 @@ var app = {
     },
 
     onSuccess: function(position) {
-        //var myLng = position.coords.longitude;
-        //var myLat = position.coords.latitude;
+        var myLng = position.coords.longitude;
+        var myLat = position.coords.latitude;
         var bounds = new google.maps.LatLngBounds;
         var geocoder = new google.maps.Geocoder;
         var service = new google.maps.DistanceMatrixService;
@@ -178,6 +178,27 @@ var app = {
             myMarker.addListener('click', function() {
                 myInfoWindow.setContent(this.myContentString);
                 myInfoWindow.open(map, this);
+            });
+            var search = [];
+            $.each(names, function(index, val) {
+
+                search.push('<option value =' + index + '>' + names[index] + "-" + avail[index] + "Bikes Available" + '</option>');
+
+            });
+            $('#liveSearch').append(search.join(''));
+
+            $('#liveSearch').change(function() {
+                var userSelected = $("#liveSearch :selected").val();
+                console.log("Selected Station Array Index: " + userSelected);
+                //selected station worked out based on index of search array
+                var myStation = names[userSelected];
+                console.log("Selected Station Name: " + myStation);
+                for (var i = 0; i < search.length; i++) {
+                    if (myStation == points[i][2]) {
+                        console.log("Selected Station Info: " + points[i]);
+                        break;
+                    }
+                }
             });
         });
     },
