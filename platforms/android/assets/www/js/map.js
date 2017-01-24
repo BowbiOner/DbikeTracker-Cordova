@@ -193,15 +193,14 @@ var app = {
                 //selected station worked out based on index of search array
                 var myStation = names[userSelected];
                 console.log("Selected Station Name: " + myStation);
-                for (var i = 0; i < search.length; i++) {
+                for (var i = 0; i <= search.length; i++) {
                     if (myStation == points[i][2]) {
+                        console.log("Loop Number: " + i);
                         console.log("Selected Station Info: " + points[i]);
                         break;
                     }
                 }
             });
-
-
         });
     },
 
