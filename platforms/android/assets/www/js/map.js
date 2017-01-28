@@ -28,9 +28,7 @@ var app = {
         var myLat = 53.35124159999999;
         var myLatLong = new google.maps.LatLng(myLat, myLng);
 
-        //var liveUrl "http://dbiketrackerv2.herokuapp.com/php-scripts/live-data.php";
         var url = "https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=ec447add626cfb0869dd4747a7e50e21d39d1850";
-
         $.getJSON(url, function(result) {
             //retrieves specific fields from json array being returned by script hosted on heroku and adds the to specific variables
             lats = result.map(function(a) {
@@ -66,7 +64,8 @@ var app = {
             //adds each variable defined above to an array, points, this will be the access point for all of our data
             $(lats).each(function(index, val) {
                 points.push([lats[index], longs[index], names[index], avail[index], availslts[index], number[index]]);
-            })
+            });
+
             console.log(points);
 
             var mapOptions = {
@@ -74,6 +73,55 @@ var app = {
                 zoom: 15,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
+
+            var search = [];
+            $.each(names, function(index, val) {
+                search.push('<option value =' + index + '>' + names[index] + "-" + avail[index] + "Bikes Available" + '</option>');
+            });
+
+            $('#liveSearch').append(search.join(''));
+
+            $('#liveSearch').change(function() {
+                var userSelected = $("#liveSearch :selected").val();
+                console.log("Selected Station Array Index: " + userSelected);
+                //selected station worked out based on index of search array
+                var myStation = names[userSelected];
+                console.log("This" + myStation);
+                console.log("Selected Station Name: " + myStation);
+                for (var i = 0; i <= search.length; i++) {
+                    if (myStation == points[i][2]) {
+                        console.log("Loop Number: " + i);
+                        console.log("Selected Station Info: " + points[i]);
+                        var myStationLat = (points[i][0]);
+                        var myStationLong = (points[i][1]);
+                        console.log(myStationLat + " : " + myStationLong);
+
+
+                        var searchContentString = "<p>" + " The " +
+                            points[i][2] + " station has " +
+                            "<br />" + points[i][3] +
+                            " bikes available " + "</p>";
+                        //marker for current location
+                        var searchLatLong = new google.maps.LatLng(myStationLat, myStationLong);
+                        var searchMarker = new google.maps.Marker({
+                            position: searchLatLong,
+                            map: map,
+                            searchContentString: searchContentString
+                        });
+                        var searchInfowindow = new google.maps.InfoWindow({});
+                        infowindow.setContent(searchMarker.searchContentString);
+                        infowindow.open(map, searchMarker);
+                        //adding on click listner for each marker, setting the content & launching infowindow
+                        // searchMarker.addListener('click', function() {
+                        //
+                        //
+                        // });
+                        map.setZoom(16);
+                        map.panTo(searchMarker.position);
+                        break;
+                    }
+                }
+            });
 
             var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
@@ -179,28 +227,6 @@ var app = {
                 myInfoWindow.setContent(this.myContentString);
                 myInfoWindow.open(map, this);
             });
-            var search = [];
-            $.each(names, function(index, val) {
-
-                search.push('<option value =' + index + '>' + names[index] + "-" + avail[index] + "Bikes Available" + '</option>');
-
-            });
-            $('#liveSearch').append(search.join(''));
-
-            $('#liveSearch').change(function() {
-                var userSelected = $("#liveSearch :selected").val();
-                console.log("Selected Station Array Index: " + userSelected);
-                //selected station worked out based on index of search array
-                var myStation = names[userSelected];
-                console.log("Selected Station Name: " + myStation);
-                for (var i = 0; i <= search.length; i++) {
-                    if (myStation == points[i][2]) {
-                        console.log("Loop Number: " + i);
-                        console.log("Selected Station Info: " + points[i]);
-                        break;
-                    }
-                }
-            });
         });
     },
 
@@ -209,3 +235,4 @@ var app = {
     },
 };
 app.initialize();
+lize();

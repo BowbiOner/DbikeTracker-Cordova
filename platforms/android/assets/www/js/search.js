@@ -16,10 +16,9 @@ $.getJSON(url, function(result) {
     // });
 
     $.each(names, function(index, val) {
-
         points.push('<option>' + names[index] + " - " + available_bikes[index] + " Bikes Available" + '</option>');
-
     });
+
     $('#liveSearch').append(points.join(''));
 
 })
