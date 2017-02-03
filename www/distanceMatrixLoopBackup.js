@@ -16,8 +16,8 @@ var app = {
 
     onSuccess: function(position) {
 
-        //var myLng = position.coords.longitude;
-        //var myLat = position.coords.latitude;
+        // var myLng = position.coords.longitude;
+        // var myLat = position.coords.latitude;
         var bounds = new google.maps.LatLngBounds;
         var geocoder = new google.maps.Geocoder;
         var service = new google.maps.DistanceMatrixService;
@@ -250,7 +250,6 @@ var app = {
                 var myStation = names[userSelected];
                 //station name
                 console.log("Selected Station Name: " + myStation);
-
                 //shorter than length of search array
                 for (var i = 0; i <= search.length; i++) {
                     //if myStation(name of seleceted station) is = to the name field of the original points array
@@ -263,14 +262,71 @@ var app = {
                         var myStationLat = (points[i][0]);
                         var myStationLong = (points[i][1]);
                         console.log(myStationLat + " : " + myStationLong);
-                        //creates latlng object from users current location (defined) at start of onSuccess function
-                        var mLocation = new google.maps.LatLng(myLat, myLng);
+
+                        //content string for infowindows used by live search
+                        var searchContentString = "<p>" + " The " +
+                            points[i][2] + " station has " +
+                            "<br />" + points[i][3] +
+                            " bikes available and " + points[i][4] + " slots available." + "</p>";
+
+                        document.getElementById("searchResult").innerHTML = searchContentString;
+
                         //make a new googlge latlng object out of the two lat/long variables defined above.
                         var searchLatLong = new google.maps.LatLng(myStationLat, myStationLong);
+                        //marker for location of chosen station
+                        var searchMarker = new google.maps.Marker({
+                            position: searchLatLong,
+                            map: map,
+                            searchContentString: searchContentString,
+                            icon: './img/blue-dot.png'
+
+                        });
+                        //infowindow for live search
+                        var searchInfowindow = new google.maps.InfoWindow({});
+                        //set content for infowindow using string defined above
+                        searchInfowindow.setContent(searchMarker.searchContentString);
+                        //zoom/pan to station location
+                        map.setZoom(17);
+                        map.panTo(searchMarker.position);
+                        //on click to allow the marker to be closed/reopened based on user input
+                        searchMarker.addListener('click', function() {
+                            searchInfowindow.setContent(this.searchContentString);
+                            searchInfowindow.open(map, this);
+                            //searchInfowindow.close(map, this);
+                        });
+                        //creates latlng object from users current location (defined) at start of onSuccess function
+                        var mLocation = new google.maps.LatLng(myLat, myLng);
+                        var sLocations = [];
+                        for (var i = 0; i < points.length; i++) {
+                            //creates latlng objects from each lat/lng pair in the points array
+                            sLocation = new google.maps.LatLng(points[i][0], points[i][1]);
+                            //calculates striaght line distance from current loaction to all stations
+                            var distanceFromAllStations = google.maps.geometry.spherical.computeDistanceBetween(mLocation, sLocation);
+                            //adds number of each station and distnace from user to an arrayv
+                            $(sLocation).each(function(index, val) {
+                                //number, names, distnace, lat, long,bikes, slots
+                                sLocations.push([points[i][5], points[i][2], distanceFromAllStations, points[i][0], points[i][1], points[i][3], points[i][4]]);
+                            })
+                        }
+
+                        //narorw down dataset based on hardcoded distance
+                        var nearMe = [];
+                        for (var i = 0; i < sLocations.length; i++) {
+                            if (sLocations[i][2] <= 750) {
+                                nearMe.push(sLocations[i]);
+                            }
+                        }
+
+                        var stationsNearMe = [];
+                        for (var i = 0; i < nearMe.length; i++) {
+                            x = new google.maps.LatLng(nearMe[i][3], nearMe[i][4]);
+                            stationsNearMe.push(x);
+                        }
+                        console.log(stationsNearMe);
                         // //Distance Matrix API
                         service.getDistanceMatrix({
                             origins: [mLocation],
-                            destinations: [searchLatLong],
+                            destinations: stationsNearMe,
                             travelMode: 'WALKING',
                             unitSystem: google.maps.UnitSystem.METRIC,
                             avoidHighways: false,
@@ -294,43 +350,13 @@ var app = {
                                         geocoder.geocode({
                                             'address': destinationList[j]
                                         });
-                                        outputDiv.innerHTML += 'You are ' + results[j].distance.text + ' from ' + myStation + '<br/>' +
-                                            ' This will take you ' + results[j].duration.text + ' to walk to.' +
-                                            "<br/><br/><br/>";
+                                        outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
+                                            ': ' + results[j].distance.text + ' in ' +
+                                            results[j].duration.text + "<br/><br/><br/>";
                                         console.log(destinationList[j]);
                                     }
                                 }
                             }
-                        });
-                        //content string for infowindows used by live search
-                        var searchContentString = "<p>" + " The " +
-                            points[i][2] + " station has " +
-                            "<br />" + points[i][3] +
-                            " bikes available and " + points[i][4] + " slots available." + "</p>";
-
-                        document.getElementById("searchResult").innerHTML = searchContentString;
-
-
-                        //marker for location of chosen station
-                        var searchMarker = new google.maps.Marker({
-                            position: searchLatLong,
-                            map: map,
-                            searchContentString: searchContentString,
-                            icon: './img/blue-dot.png'
-
-                        });
-                        //infowindow for live search
-                        var searchInfowindow = new google.maps.InfoWindow({});
-                        //set content for infowindow using string defined above
-                        searchInfowindow.setContent(searchMarker.searchContentString);
-                        //zoom/pan to station location
-                        map.setZoom(17);
-                        map.panTo(searchMarker.position);
-                        //on click to allow the marker to be closed/reopened based on user input
-                        searchMarker.addListener('click', function() {
-                            searchInfowindow.setContent(this.searchContentString);
-                            searchInfowindow.open(map, this);
-                            //searchInfowindow.close(map, this);
                         });
                         break;
                     }

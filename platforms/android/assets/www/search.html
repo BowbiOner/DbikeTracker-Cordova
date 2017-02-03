@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <!-- <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBO0A9Jx2ee53ZXKAVQx3OYzxw3whZs0Jg&libraries=geometry"></script> -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        var url = "https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=ec447add626cfb0869dd4747a7e50e21d39d1850";
+        $.getJSON(url, function(result) {
+            //retrieves specific fields from json array being returned by script hosted on heroku and adds the to specific variables
+            names = result.map(function(a) {
+                return a.name;
+            });
+            number = result.map(function(a) {
+                return a.number;
+            });
+
+            var station_select = [];
+            //adds each variable defined above to an array, points, this will be the access point for all of our data
+            $(number).each(function(index, val) {
+                station_select.push("<option id=number value=" + number[index] + " >" + names[index] + "- NO:" + number[index] + "</option>");
+                // $('number' + index).val(val);
+            });
+            console.log(station_select);
+            $('#number').append(station_select.join(''));
+            $('#number').change(function() {
+                var userSelected = $("#number :selected").val();
+                console.log("Selected Station Array Index: " + userSelected);
+                //selected station worked out based on index of search array
+                // var myStation = userSelected;
+                // // console.log("This" + myStation);
+                // // console.log("Selected Station Number: " + myStation);
+                // document.getElementsByName("statnum").value = myStation;
+            });
+        });
+        console.log("1");
+    </script>
+
+    <title>"dbike Tracker"</title>
+</head>
+
+<body>
+    <div class="search" futuresearch1="1">
+        <form>
+            <label for="time">
+              <b>Time</b>
+              <input type="text" id="time" name="time" placeholder="00:00:00" />
+            </label>
+            <label>
+              <b>Date</b>
+              <input type="date" name="date" id="date" />
+              <script>
+                var date = document.getElementById("date").value;
+              </script>
+            </label>
+            <label>
+              <b>Station</b>
+              <select type="text" id="number" name="statnum" data-filter="true" data-input="#searchForSelect">
+              </select>
+            </label>
+            <label>
+              <b>Search</b>
+              <input type="submit" name="submit" id="submit" value="submit" />
+            </label>
+        </form>
+        <div role="main" class="ui-content" id="map-canvas">
+
+        </div>
+        <div id="output"></div>
+    </div>
+</body>
+<script>
+    jQuery.ajaxPrefilter(function(options) {
+        if (options.crossDomain && jQuery.support.cors) {
+            options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
+        }
+    });
+    $('form').submit(function() {
+        var postData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            data: postData,
+            url: 'https://dbiketrackerv2.herokuapp.com/php-scripts/searchavail.php',
+            success: function(data) {
+                console.log(data);
+                alert('You did it you Einstein');
+            },
+            error: function() {
+                console.log(data);
+                alert('ERRORRRR ERRRRORRRR');
+            }
+
+
+        });
+        return false;
+    });
+    console.log("2");
+</script>
+
+</html>

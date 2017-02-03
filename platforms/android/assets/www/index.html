@@ -12,30 +12,29 @@
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/map.js"></script>
-    <!-- <script type="text/javascript" src="js/search.js"></script> -->
     <title>"dbike Tracker"</title>
 </head>
 
 <body>
     <div data-role="page" id="map-page" data-url="map-page">
+        <!-- <img src="img/header.jpg"> -->
         <div class="search">
-            <select value="Choose a station" id="liveSearch" data-filter="true" data-input="#searchForSelect">
-
-</select>
-
-            <div role="main" class="ui-content" id="map-canvas">
-
-            </div>
-            <div id="output"></div>
+            <input type="text" id="time" name="time" placeholder="Time(00:00:00)" />
+            <input type="date" name="date" id="date" placeholder="Date" />
+            <select value="Choose a station" id="liveSearch" data-filter="true" data-input="#searchForSelect"></select>
         </div>
+        <div role="main" class="ui-content" id="map-canvas">
+        </div>
+        <div id="searchResult"></div>
+        <div data-role="collapsible" data-theme="b" data-content-theme="b">
+            <h3>See More...</h3>
+            <div id=output utput></div>
+        </div>
+        <!-- <div id="output"></div> -->
+        <!-- <a href="search.html">Search</a> -->
+
     </div>
+
 </body>
 
 </html>
-</body>
-</div>
-</div>
-</body>
-
-</html>
-</body>
